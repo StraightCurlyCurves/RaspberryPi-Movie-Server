@@ -185,14 +185,14 @@ sudo zgrep 'Failed'  /var/log/auth.log
 
 ## Setup ddclient
 
-create
+Create an account at a dynamic DNS service provider (for example noip.com)
 
 Install ddclient:
 ```
 sudo apt-get install ddclient
 ```
 
-Enter your informatoin into the installation prompt.
+Enter your dynamic DNS service provider information into the installation prompt.
 
 Open the config file with `sudo nano /etc/ddclient.conf` and delete the backslashes `\`. No idea why they are there, but ddclient doesn't work until they're deleted. Also, add `daemon=600` on top. The file could look like this:
 ```
