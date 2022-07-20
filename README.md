@@ -29,8 +29,7 @@ sudo systemctl restart jellyfin
 sudo /etc/init.d/jellyfin stop
 ```
 
-
-go to your webbrowser and open `<<raspberryIP>>:8096` or `<<hostname>>:8096`. Follow the instructions to setup Jellyfin.
+Go to your webbrowser and open `<<raspberryIP>>:8096` or `<<hostname>>:8096`. Follow the instructions to setup Jellyfin.
 
 ## Install OpenMediaVault
 In order to be able to manage the moviefiles on the harddisks which are connected via USB to the Raspberry Pi, we have to make them available in the Network (SMB). The easiest way to do it is with OpenMediaVault (OMV).
@@ -45,4 +44,6 @@ Reboot the system with
 sudo reboot
 ```
 
-Open your Raspberry's IP adress to configure OMV
+Go to your webbrowser and open `<<raspberryIP>>` or `<<hostname>>`. Follow the instructions to setup OMV.
+
+Change admin password and disable SSH access for root!
