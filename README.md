@@ -17,7 +17,9 @@ Make sure to not plug in more than one harddisk without own power supply.
 
 ## Install Jellyfin
 
-Follow the instructions 1. - 6. from https://jellyfin.org/docs/general/administration/installing.html#debian:
+Follow the instructions 1. - 6. from https://jellyfin.org/docs/general/administration/installing.html#debian.
+
+Summed up commands are:
 ```
 sudo apt install extrepo
 sudo extrepo enable jellyfin
@@ -75,10 +77,104 @@ The fstab file could look like this:
 # <<< [openmediavault]
 ```
 
+Note that writing on that hard disk needs a lot of CPU usage. You might consider to have a NTFS (yes, NTFS works fine with Jellyfin and OMV) or ext4 formatted hard disk.
+
 ## Secure SSH and Jellyfin with fail2ban
 
 In case youu want to access your Raspberry Pi or Jellyfin from the internet, you should setup fail2ban to block IP addresses who try to Brute force into your Raspberry.
 
-TODO
+### SSH
+
+There is a nice tutorial here: https://pimylifeup.com/raspberry-pi-fail2ban/
+
+Summed up commands are:
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install fail2ban
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+
+Open jail.local with `sudo nano /etc/fail2ban/jail.local` and find:
+```
+[sshd]
+
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+```
+
+Add following lines below `[sshd]` (copy and replace the whole part):
+```
+[sshd]
+enabled = true
+filter = sshd
+port = ssh
+banaction = iptables-multiport
+bantime = -1
+maxretry = 3
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+```
+
+Save the file and restart fail2ban:
+```
+sudo service fail2ban restart
+```
+
+### Jellyfin
+
+Follow this official tutorial: https://jellyfin.org/docs/general/networking/fail2ban.html
+
+Summed up commands are:
+```
+sudo nano /etc/fail2ban/jail.d/jellyfin.local
+```
+
+Add to this new empty file:
+```
+[jellyfin]
+
+backend = auto
+enabled = true
+port = 8096,8920
+protocol = tcp
+filter = jellyfin
+maxretry = 3
+bantime = -1
+findtime = 43200
+logpath = /var/log/jellyfin/jellyfin*.log
+```
+
+Save and exit nano.
+
+```
+sudo nano /etc/fail2ban/filter.d/jellyfin.conf
+```
+
+Add to this new empty file:
+```
+[Definition]
+failregex = ^.*Authentication request for ".*" has been denied \(IP: "<ADDR>"\)\.
+```
+
+save and exit nano. Then reload fail2ban:
+```
+sudo systemctl restart fail2ban
+```
+
+### Userful commands
+
+Here are some useful commands to check banned IPs, unban IPs etc:
+```
+sudo fail2ban-client status sshd
+sudo fail2ban-client status jellyfin
+sudo fail2ban-client set sshd unbanip 194.230.155.108
+sudo fail2ban-client set jellyfin unbanip 194.230.155.108
+sudo zgrep 'Ban' /var/log/fail2ban.log*
+sudo iptables -L INPUT -v -n | less
+sudo zgrep 'Accepted'  /var/log/auth.log
+sudo zgrep 'Failed'  /var/log/auth.log
+```
 
 ## Setup ddclient
