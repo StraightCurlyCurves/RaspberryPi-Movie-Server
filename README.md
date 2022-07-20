@@ -39,7 +39,7 @@ To install OMV on a Raspberry Pi, execute this command from https://github.com/O
 sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
 ```
 
-Reboot the system with
+This may take a while. After it finished, reboot the system with
 ```
 sudo reboot
 ```
