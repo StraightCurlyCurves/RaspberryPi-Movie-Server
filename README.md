@@ -52,7 +52,9 @@ sudo reboot
 
 Go to your webbrowser and open `<<raspberryIP>>` or `<<hostname>>`. Login with the username `admin` and password `openmediavault`.
 
-Change admin password and disable SSH access for root!
+Change admin password, disable SSH access for root and enable SSL!
+
+Don't forget to enable SMB ;-)
 
 ### Problems with exFAT hard disks
 
@@ -122,6 +124,8 @@ Save the file and restart fail2ban:
 sudo service fail2ban restart
 ```
 
+Try to get yourself banned to check if it works! Also, if your Router allows, change public SSH port to something else then port 22. You could for example map the port 3303 to 22. This prevents A LOT of attacks.
+
 ### Jellyfin
 
 Follow this official tutorial: https://jellyfin.org/docs/general/networking/fail2ban.html
@@ -162,6 +166,8 @@ save and exit nano. Then reload fail2ban:
 ```
 sudo systemctl restart fail2ban
 ```
+
+Try to get yourself banned to check if it works!
 
 ### Userful commands
 
