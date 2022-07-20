@@ -48,9 +48,32 @@ This may take a while. After it finished, reboot the system with
 sudo reboot
 ```
 
-Go to your webbrowser and open `<<raspberryIP>>` or `<<hostname>>`. Follow the instructions to setup OMV.
+Go to your webbrowser and open `<<raspberryIP>>` or `<<hostname>>`. Login with the username `admin` and password `openmediavault`.
 
 Change admin password and disable SSH access for root!
+
+### Problems with exFAT hard disks
+
+If you want to share a folder on a exFAT formatted hard disk, you run into a problem, that as soon as you reboot the Raspberry Pi, you won't have write permissions anymore. To solve this problem, follow this steps:
+
+1. Install exfat-fuse and reboot
+```
+sudo apt-get install exfat-fuse
+sudo apt-get install -f
+sudo reboot
+```
+
+2. Change the fileformat in the fstab entry from openmediavault from `exfat` to `exfat-fuse`:
+```
+sudo nano /etc/fstab
+```
+
+The fstab file could look like this:
+```
+# >>> [openmediavault]
+/dev/disk/by-uuid/0E33-DD1D             /srv/dev-disk-by-uuid-0E33-DD1D exfat-fuse      defaults,nofail 0 2
+# <<< [openmediavault]
+```
 
 ## Secure SSH and Jellyfin with fail2ban
 
