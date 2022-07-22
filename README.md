@@ -245,4 +245,5 @@ OMV_MONIT_SERVICE_FILESYSTEM_SPACEUSAGE=<percentage>
 Execute following:
 ```
 sudo monit reload
+sudo reboot
 ```
