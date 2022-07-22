@@ -227,3 +227,22 @@ zgrep 'ddclient' /var/log/syslog
 ## SSL for Jellyfin
 
 TODO
+
+## Troubleshooting
+
+### Space usage resource limit
+
+If a hard disk's space usage is above the set threshold (standard 80% in OMV), it can cause some write permission errors (even on other connected hard disks with enough free space!). To solve this, check if something is red with:
+```
+sudo monit status
+```
+
+Add to `/etc/default/openmediavault` following line:
+```
+OMV_MONIT_SERVICE_FILESYSTEM_SPACEUSAGE=<percentage>
+```
+
+Execute following:
+```
+sudo monit reload
+```
