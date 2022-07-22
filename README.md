@@ -231,6 +231,14 @@ TODO
 ## Troubleshooting
 
 ### Space usage resource limit
+Check for space usage warning:
+```
+zgrep 'space usage' /var/log/syslog
+```
+you probably see something like this:
+```
+Jul 22 11:46:40 <hostname> monit[1048]: 'filesystem_srv_dev-disk-by-uuid-xxx' space usage 95.5% matches resource limit [space usage > 95.0%]
+```
 
 If a hard disk's space usage is above the set threshold (standard 80% in OMV), it can cause some write permission errors (even on other connected hard disks with enough free space!). To solve this, check if something is red with:
 ```
@@ -247,3 +255,5 @@ Execute following:
 sudo monit reload
 sudo reboot
 ```
+
+` zgrep 'space usage' /var/log/syslog` will still show the warnings, but it seems to solve the write permission errors.
