@@ -257,3 +257,11 @@ sudo reboot
 ```
 
 ` zgrep 'space usage' /var/log/syslog` will still show the warnings, but it seems to solve the write permission errors.
+
+### Jellyfin doesn't write NFOs and images to movie folder
+This happens if the user jellyfin doesn't have write permissions to the movie folders. Check the permissions of the movie folder with `ls -l` and add the user jellyfin to the group owner. 
+```
+sudo usermod -aG <group> jellyfin
+```
+
+Restart the raspberry!
