@@ -226,7 +226,23 @@ zgrep 'ddclient' /var/log/syslog
 
 ## SSL for Jellyfin
 
-TODO
+Install certbot (Let's Encrypt):
+```
+sudo apt install certbot
+```
+
+Generate a new certificate for your webserver. Make sure port 80 is open and to shutdown openmediavault or change its port (because it's blocking port 80):
+```
+sudo certbot certonly --standalone -d <websitename>
+```
+Website name could be myname.ddns.net.
+
+Convert the certificate to a PKCS-#12 file:
+```
+sudo openssl pkcs12 -export -in /etc/letsencrypt/live/<websitename>/fullchain.pem -inkey /etc/letsencrypt/live/<websitename>/privkey.pem -out ~/<websitename>.pfx
+```
+
+Go to Jellyfin, activate SSL and choose the converted certificate.
 
 ## Troubleshooting
 
